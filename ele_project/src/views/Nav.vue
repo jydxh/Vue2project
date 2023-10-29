@@ -13,7 +13,7 @@
 		</el-menu>
 
 		<!-- 垂直导航 -->
-		<el-menu :default-active="active">
+		<el-menu class="my-menu" :default-active="active" active-text-color="#f00" text-color="#0f0">
 			<el-menu-item index="1">指南</el-menu-item>
 			<el-menu-item index="2">组件</el-menu-item>
 			<el-submenu index="3">
@@ -30,10 +30,14 @@
 	export default {
 		data() {
 			return {
-				active: 1,
+				active: "1",
 			};
 		},
 	};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+	.my-menu {
+		width: 200px;
+	}
+</style>
