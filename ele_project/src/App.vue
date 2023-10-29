@@ -1,8 +1,8 @@
 <template>
 	<div id="app">
-		<nav>
-			<router-link to="/">Home</router-link> |
-			<router-link to="/about">About</router-link>
+		<!-- <nav>
+			<router-link to="/">Home</router-link> | <router-link to="/about">About</router-link> |
+			<router-link to="/nav">nav</router-link>
 		</nav>
 		<el-row>
 			<el-button>默认按钮</el-button>
@@ -18,7 +18,8 @@
 			<el-button type="primary" icon="el-icon-delete"></el-button>
 			<el-button type="primary" icon="el-icon-search">搜索</el-button>
 			<el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
-		</el-row>
+		</el-row> -->
+		<router-link to="/nav">nav</router-link>
 		<router-view />
 	</div>
 </template>
