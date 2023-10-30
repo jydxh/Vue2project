@@ -4,7 +4,7 @@
 			<el-header class="header">
 				<img src="../assets/logo_el.svg" alt="" />
 				<el-input placeholder="search for documentation" size="small" class="input"></el-input>
-				<el-menu :default-active="active" class="el-menu-demo" mode="horizontal">
+				<el-menu :default-active="'2'" class="el-menu-demo" mode="horizontal">
 					<el-menu-item index="1" class="menu-top">Guide</el-menu-item>
 					<el-menu-item index="2" class="menu-top">Components</el-menu-item>
 					<el-menu-item index="3" class="menu-top">Theme</el-menu-item>
@@ -16,29 +16,10 @@
 			<el-container class="second-container">
 				<el-aside class="aside scroll">
 					<el-menu :default-active="$route.path" class="el-menu-demo" router>
-						<el-menu-item index="/components/container" class="menu">
+						<el-menu-item :index="item.index" class="menu" v-for="item in menu" :key="item.index">
 							<template slot="title">
-								<i class="el-icon-location"></i>
-								<span> Container</span>
-							</template>
-						</el-menu-item>
-						<el-menu-item index="/components/table" class="menu">
-							<template slot="title">
-								<i class="el-icon-document"></i>
-								<span> table</span>
-							</template>
-						</el-menu-item>
-						<el-menu-item index="/components/form" class="menu">
-							<template slot="title">
-								<i class="el-icon-menu"></i>
-								<span> form</span>
-							</template>
-						</el-menu-item>
-
-						<el-menu-item index="/components" class="menu">
-							<template slot="title">
-								<i class="el-icon-setting"></i>
-								<span> Home</span>
+								<i :class="item.icon"></i>
+								<span> {{ item.text }}</span>
 							</template>
 						</el-menu-item>
 					</el-menu>
@@ -58,23 +39,41 @@
 				menu: [
 					{
 						index: "/components/container",
-						icon: "el-icon-location",
-						text: "Container 容器组件",
+						icon: "el-icon-receiving",
+						text: "Container ",
 					},
 					{
 						index: "/components/table",
-						icon: "el-icon-location",
-						text: "Table 表格组件",
+						icon: "el-icon-s-grid",
+						text: "Table ",
 					},
 					{
 						index: "/components/form",
-						icon: "el-icon-location",
-						text: "Form 表单组件",
+						icon: "el-icon-tickets",
+						text: "Form ",
 					},
 					{
 						index: "/components/button",
-						icon: "el-icon-location",
-						text: "Button按钮组件",
+						icon: "el-icon-thumb",
+						text: "Button",
+					},
+					{
+						index: "/components/actor",
+						icon: "el-icon-s-grid",
+						text: "演员管理",
+						// 一旦包含children，则代表，演员管理为 el-submenu
+						children: [
+							{
+								index: "/components/actor-add",
+								icon: "el-icon-plus",
+								text: "添加演员",
+							},
+							{
+								index: "/components/actor-list",
+								icon: "el-icon-tickets",
+								text: "演员列表",
+							},
+						],
 					},
 				],
 			};
