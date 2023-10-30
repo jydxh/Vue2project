@@ -1,6 +1,7 @@
 <template>
 	<div class="form">
-		<el-form :model="form" :rules="rules" lavel-width="100px">
+		<!-- //ref 属性可以为自定义组件指定一个别名，用于获取组件对象，通过this.$refs 获取组件对象：this.$refs.form -->
+		<el-form :model="form" ref="form" :rules="rules" lavel-width="100px">
 			<el-form-item label="用户账号" prop="name">
 				<el-input v-model="form.name"></el-input>
 			</el-form-item>
@@ -14,7 +15,7 @@
 				<el-input v-model="form.phone"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary">快速注册</el-button>
+				<el-button type="primary" @click="submit">快速注册</el-button>
 				<el-button type="danger">重置</el-button>
 			</el-form-item>
 		</el-form>
@@ -28,9 +29,9 @@
 				form: {},
 				rules: {
 					name: [
-						{ required: true, message: "必填项", trigger: "blur" },
-						{ min: 5, max: 10, message: "长度为5-10个字符", trigger: "blur" },
-						{ pattern: /^\w{5-10}$/, message: "含有非法字符", trigger: "blur" },
+						{ required: true, message: "账号为必填项", trigger: "blur" },
+						{ min: 5, max: 10, message: "长度[5-10]字符", trigger: "blur" },
+						{ pattern: /^\w{5,10}$/, message: "含有非法字符", trigger: "blur" },
 					],
 					pwd: [
 						{ required: true, message: "必填项", trigger: "blur" },
@@ -59,6 +60,17 @@
 					],
 				},
 			};
+		},
+		methods: {
+			submit() {
+				this.$refs.form.validate(valid => {
+					if (valid) {
+						console.log("success:", this.form);
+					} else {
+						console.error("fail:", this.form);
+					}
+				});
+			},
 		},
 	};
 </script>
