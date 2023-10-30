@@ -15,32 +15,27 @@
 			</el-header>
 			<el-container class="second-container">
 				<el-aside class="aside scroll">
-					<el-menu :default-active="active" class="el-menu-demo">
-						<el-menu-item index="1" class="menu">
+					<el-menu :default-active="$route.path" class="el-menu-demo" router>
+						<el-menu-item index="/components/container" class="menu">
 							<template slot="title">
 								<i class="el-icon-location"></i>
 								<span> Container</span>
 							</template>
 						</el-menu-item>
-						<el-menu-item index="2" class="menu">
+						<el-menu-item index="/components/table" class="menu">
 							<template slot="title">
 								<i class="el-icon-document"></i>
 								<span> table</span>
 							</template>
 						</el-menu-item>
-						<el-menu-item index="3" class="menu">
+						<el-menu-item index="/components/form" class="menu">
 							<template slot="title">
 								<i class="el-icon-menu"></i>
 								<span> form</span>
 							</template>
 						</el-menu-item>
-						<el-menu-item index="4" class="menu">
-							<template slot="title">
-								<i class="el-icon-document"></i>
-								<span> github</span>
-							</template>
-						</el-menu-item>
-						<el-menu-item index="5" class="menu">
+
+						<el-menu-item index="/components" class="menu">
 							<template slot="title">
 								<i class="el-icon-setting"></i>
 								<span> Home</span>
@@ -60,7 +55,28 @@
 	export default {
 		data() {
 			return {
-				active: "1",
+				menu: [
+					{
+						index: "/components/container",
+						icon: "el-icon-location",
+						text: "Container 容器组件",
+					},
+					{
+						index: "/components/table",
+						icon: "el-icon-location",
+						text: "Table 表格组件",
+					},
+					{
+						index: "/components/form",
+						icon: "el-icon-location",
+						text: "Form 表单组件",
+					},
+					{
+						index: "/components/button",
+						icon: "el-icon-location",
+						text: "Button按钮组件",
+					},
+				],
 			};
 		},
 	};

@@ -28,6 +28,8 @@ const routes = [
 		path: "/components",
 		name: "components",
 		component: () => import("../views/Components.vue"),
+		// redirect to the container page
+		redirect: "/components/container",
 		children: [
 			{
 				// 只有一级路由要加"/", 往下级别的 不要加 “/”
