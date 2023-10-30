@@ -18,8 +18,9 @@
 			<el-button type="primary" icon="el-icon-delete"></el-button>
 			<el-button type="primary" icon="el-icon-search">搜索</el-button>
 			<el-button type="primary">上传<i class="el-icon-upload el-icon--right"></i></el-button>
-		</el-row> -->
+		</el-row> 
 		<router-link to="/nav">nav</router-link>
+    -->
 		<router-view />
 	</div>
 </template>
@@ -44,5 +45,12 @@
 				color: #42b983;
 			}
 		}
+	}
+
+	* {
+		margin: 0;
+		padding: 0;
+		text-decoration: none;
+		list-style-type: none;
 	}
 </style>
