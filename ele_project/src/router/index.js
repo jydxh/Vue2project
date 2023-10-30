@@ -13,10 +13,7 @@ const routes = [
 	{
 		path: "/about",
 		name: "about",
-		// route level code-splitting
-		// this generates a separate chunk (about.[hash].js) for this route
-		// which is lazy-loaded when the route is visited.
-		component: () => import(/* webpackChunkName: "about" */ "../views/AboutView.vue"),
+		component: () => import("../views/AboutView.vue"),
 	},
 	{
 		path: "/nav",
@@ -29,7 +26,27 @@ const routes = [
 	},
 	{
 		path: "/components",
+		name: "components",
 		component: () => import("../views/Components.vue"),
+		children: [
+			{
+				// 只有一级路由要加"/", 往下级别的 不要加 “/”
+				path: "table",
+				name: "table",
+				component: () => import("../views/Table.vue"),
+			},
+
+			{
+				path: "container",
+				name: "container",
+				component: () => import("../views/Container.vue"),
+			},
+			{
+				path: "form",
+				name: "form",
+				component: () => import("../views/Form.vue"),
+			},
+		],
 	},
 ];
 
