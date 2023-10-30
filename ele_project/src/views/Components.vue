@@ -24,7 +24,7 @@
 						</el-menu-item>
 					</el-menu>
 				</el-aside>
-				<el-main>
+				<el-main class="main">
 					<router-view />
 				</el-main>
 			</el-container>
