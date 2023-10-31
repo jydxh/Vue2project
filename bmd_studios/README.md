@@ -1,4 +1,4 @@
-# bmd_studios
+# bmdstudios-ms-client
 
 ## Project setup
 ```
