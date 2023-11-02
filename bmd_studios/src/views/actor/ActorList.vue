@@ -20,7 +20,11 @@
 		<el-divider content-position="left">演员列表</el-divider>
 		<!--  -->
 		<!-- 呈现演员列表 -->
-		<person :name="item.actor_name" :avatar="item.actor_avatar" v-for="item in actors" :key="item.id"></person>
+		<person :name="item.actor_name" :avatar="item.actor_avatar" v-for="item in actors" :key="item.id" @del="deleteActor(item.id)"></person>
+		<!-- 确认消息弹窗 -->
+		<!-- <template>
+			<el-button type="text" @click="open" style="display: none"></el-button>
+		</template> -->
 	</div>
 </template>
 
@@ -43,6 +47,44 @@
 		},
 		/* pay attention here !!! methods! */
 		methods: {
+			// 弹窗代码
+			open(id) {
+				this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+					confirmButtonText: "确定",
+					cancelButtonText: "取消",
+					type: "warning",
+				})
+					.then(() => {
+						this.$message({
+							type: "success",
+							message: "删除成功!",
+						});
+						/* axios删除服务器对应id */
+						const url = "http://localhost:3010/movie-actor/del";
+						const params = { id };
+						myaxios.post(url, params).then(res => {
+							console.log("删除演员结果：", res);
+							if ((res.data.code = 200)) this.search();
+						});
+					})
+					.catch(() => {
+						this.$message({
+							type: "info",
+							message: "已取消删除",
+						});
+					});
+			},
+			// 删除演员
+			deleteActor(id) {
+				console.log("catch the event in parents: ", id);
+				this.open(id);
+				/* const url = "http://localhost:3010/movie-actor/del";
+				const params = { id };
+				myaxios.post(url, params).then(res => {
+					console.log("删除演员结果：", res);
+					if ((res.data.code = 200)) this.search();
+				}); */
+			},
 			/* 初始化数据 */
 			init() {
 				/* let url = "https://web.codeboy.com/bmdapi/movie-actors"; */
