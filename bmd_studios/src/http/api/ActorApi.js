@@ -1,8 +1,11 @@
 import Myaxios from "../Myaxios";
+import BaseUrl from "../BaseUrl";
+const BMDURL = BaseUrl.BMDURL;
+
 const actorApi = {
 	/* 查询所有演员 返回promise */
 	queryAllActors() {
-		let url = "http://localhost:3010/movie-actors";
+		let url = BMDURL + "/movie-actors";
 		return Myaxios.get(url, { page: 1, pagesize: 100 });
 	},
 
@@ -12,7 +15,7 @@ const actorApi = {
 	 * @return Promise
 	 */
 	queryqueryByNameLike(params) {
-		let url = "http://localhost:3010/movie-actors/name";
+		let url = BMDURL + "/movie-actors/name";
 		return Myaxios.post(url, params);
 	},
 
@@ -24,8 +27,8 @@ const actorApi = {
 	 */
 
 	add(params) {
-		let url = "http://localhost:3010/movie-actor/add";
-		return Myaxios.get(url, params);
+		let url = BMDURL + "/movie-actor/add";
+		return Myaxios.post(url, params);
 	},
 
 	/**
@@ -35,7 +38,7 @@ const actorApi = {
 	 */
 
 	delete(params) {
-		const url = "http://localhost:3010/movie-actor/del";
+		const url = BMDURL + "/movie-actor/del";
 		return Myaxios.post(url, params);
 	},
 };

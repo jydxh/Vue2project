@@ -33,6 +33,7 @@
 
 <script>
 	import myaxios from "@/http/Myaxios.js";
+	import httpApi from "@/http/index.js";
 	export default {
 		data() {
 			return {
@@ -55,12 +56,11 @@
 			},
 			/* 提交表单 */
 			submit() {
-				const url = "http://localhost:3010/movie-actor/add";
 				let params = this.form;
 				this.$refs["form"].validate(valid => {
 					if (valid) {
-						myaxios
-							.post(url, params)
+						httpApi.actorApi
+							.add(params)
 							.then(res => {
 								console.log(res);
 								if (res.data.code == 200) {

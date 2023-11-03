@@ -103,6 +103,10 @@
 					? httpApi.actorApi.queryqueryByNameLike(para).then(res => {
 							console.log("query results:", res);
 							this.actors = res.data.data; //更新列表
+							if (this.actors.length === 0) {
+								alert("查无此人!");
+								this.init();
+							}
 					  })
 					: this.init();
 			},
