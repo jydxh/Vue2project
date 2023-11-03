@@ -15,7 +15,7 @@
 			<el-form-item label="头像" prop="actorAvatar">
 				<el-upload
 					class="avatar-uploader"
-					action="http://localhost:9000/upload"
+					:action="url + '/upload'"
 					:show-file-list="false"
 					:on-success="handleAvatarSuccess"
 					:before-upload="beforeAvatarUpload">
@@ -34,9 +34,12 @@
 <script>
 	import myaxios from "@/http/Myaxios.js";
 	import httpApi from "@/http/index.js";
+	import BaseUrl from "../../http/BaseUrl.js";
+	const url = BaseUrl.UPLOADURL;
 	export default {
 		data() {
 			return {
+				url,
 				form: {
 					actorName: "", // 封装演员名字
 					actorAvatar: "", // 封装演员头像路径
@@ -47,7 +50,9 @@
 				},
 			};
 		},
-
+		mounted() {
+			console.log(url);
+		},
 		methods: {
 			/* 取消重置表单 */
 			cancel() {
