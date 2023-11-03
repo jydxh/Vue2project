@@ -31,6 +31,7 @@
 <script>
 	import Person from "@/components/Person.vue";
 	import myaxios from "@/http/Myaxios.js";
+	import httpApi from "@/http/index.js";
 	export default {
 		components: {
 			Person,
@@ -87,11 +88,8 @@
 			},
 			/* 初始化数据 */
 			init() {
-				/* let url = "https://web.codeboy.com/bmdapi/movie-actors"; */
-				const url = "http://localhost:3010/movie-actors";
-				const params = { page: 150, pagesize: 120 };
-				myaxios
-					.get(url, params)
+				httpApi
+					.queryAllActors()
 					.then(res => {
 						console.log("result:", res);
 						this.actors = res.data.data;
