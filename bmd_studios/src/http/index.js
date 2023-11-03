@@ -1,12 +1,8 @@
-import myaxios from "./Myaxios";
+import actorApi from "./api/ActorApi";
 
-// index.js 提供访问接口的API
+// index.js 提供访问具体某接口模块对象
 const httpApi = {
-	queryAllActors() {
-		let url = "http://localhost:3010/movie-actors";
-		let params = { page: 1, pagesize: 100 };
-		return myaxios.get(url, params); //返回的promise对象
-	},
+	actorApi,
 };
 
 export default httpApi;

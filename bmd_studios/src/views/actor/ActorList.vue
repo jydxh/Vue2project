@@ -61,9 +61,7 @@
 							message: "删除成功!",
 						});
 						/* axios删除服务器对应id */
-						const url = "http://localhost:3010/movie-actor/del";
-						const params = { id };
-						myaxios.post(url, params).then(res => {
+						httpApi.actorApi.delete({ id }).then(res => {
 							console.log("删除演员结果：", res);
 							if ((res.data.code = 200)) this.search();
 						});
@@ -88,7 +86,7 @@
 			},
 			/* 初始化数据 */
 			init() {
-				httpApi
+				httpApi.actorApi
 					.queryAllActors()
 					.then(res => {
 						console.log("result:", res);
@@ -100,10 +98,9 @@
 			},
 			/* 点击查询后模糊查询列表数据 */
 			search() {
-				const url = "http://localhost:3010/movie-actors/name";
 				let para = { name: this.name };
 				this.name !== ""
-					? myaxios.post(url, para).then(res => {
+					? httpApi.actorApi.queryqueryByNameLike(para).then(res => {
 							console.log("query results:", res);
 							this.actors = res.data.data; //更新列表
 					  })
