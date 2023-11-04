@@ -44,18 +44,19 @@
 		</el-table>
 
 		<!-- pagination -->
-		<el-pagination
-			background
-			content-position="right"
-			:total="movieData.total"
-			:page-size="movieData.pagesize"
-			:current-page="movieData.page"
-			@current-change="changeCurrentpage"
-			@prev-click="changeCurrentpage"
-			@next-click="changeCurrentpage"
-			layout="->,total, prev, pager, next,jumper"
-			style="margin: 10px">
-		</el-pagination>
+		<div class="pagination">
+			<el-pagination
+				background
+				:total="movieData.total"
+				:page-size="movieData.pagesize"
+				:current-page="movieData.page"
+				@current-change="changeCurrentpage"
+				@prev-click="changeCurrentpage"
+				@next-click="changeCurrentpage"
+				layout="total, prev,pager, next,jumper  "
+				style="margin: 10px">
+			</el-pagination>
+		</div>
 	</div>
 </template>
 
@@ -68,8 +69,8 @@
 				name: "", // save query key words
 				// 保存电影数据
 				movieData: {
-					page: 3, //当前页面
-					pagesize: 3, // 每页条数
+					page: 1, //当前页面
+					pagesize: 5, // 每页条数
 					total: 0, // 总条目数
 					result: [], // 电影列表
 				},
@@ -99,4 +100,11 @@
 	};
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+	.pagination {
+		width: 80vw;
+		margin: 20px auto;
+		display: flex;
+		justify-content: center;
+	}
+</style>
