@@ -23,24 +23,36 @@
 		<!-- table -->
 
 		<el-table :data="movieData.result">
-			<el-table-column label="封面">
+			<el-table-column label="电影封面" align="center" width="100">
 				<template slot-scope="scope"> <img :src="scope.row.cover" width="60px" /> </template>
 			</el-table-column>
-			<el-table-column label="标题" width="150" prop="title"></el-table-column>
-			<el-table-column label="主演" width="200" prop="star_actor"></el-table-column>
-			<el-table-column label="上映时间" width="150" prop="showingon"></el-table-column>
-			<el-table-column label="时长" width="100" prop="duration"></el-table-column>
-			<el-table-column label="所属类别" width="100" prop="type"></el-table-column>
-			<el-table-column label="操作" width="200"></el-table-column>
+			<el-table-column label="电影名称" align="center" prop="title"></el-table-column>
+			<el-table-column label="主演" align="center" width="200" prop="star_actor"></el-table-column>
+			<el-table-column label="上映时间" align="center" width="120" prop="showingon"></el-table-column>
+
+			<el-table-column label="时长" align="center" width="80">
+				<template slot-scope="scope"> {{ scope.row.duration }} 分钟 </template>
+			</el-table-column>
+
+			<el-table-column label="所属类别" align="center" prop="type"></el-table-column>
+			<el-table-column label="操作" align="center" width="180">
+				<el-button size="small" type="info" icon="el-icon-user" circle></el-button>
+				<el-button size="small" type="success" icon="el-icon-picture-outline" circle></el-button>
+				<el-button size="small" type="warning" icon="el-icon-edit" circle></el-button>
+				<el-button size="small" type="danger" icon="el-icon-delete" circle></el-button>
+			</el-table-column>
 		</el-table>
 
 		<!-- pagination -->
 		<el-pagination
 			background
 			content-position="right"
-			:total="2013"
-			:page-size="2"
-			:current-page="2"
+			:total="movieData.total"
+			:page-size="movieData.pagesize"
+			:current-page="movieData.page"
+			@current-change="changeCurrentpage"
+			@prev-click="changeCurrentpage"
+			@next-click="changeCurrentpage"
 			layout="->,total, prev, pager, next,jumper"
 			style="margin: 10px">
 		</el-pagination>
@@ -56,8 +68,8 @@
 				name: "", // save query key words
 				// 保存电影数据
 				movieData: {
-					page: 1, //当前页面
-					pagesize: 10, // 每页条数
+					page: 3, //当前页面
+					pagesize: 3, // 每页条数
 					total: 0, // 总条目数
 					result: [], // 电影列表
 				},
@@ -65,17 +77,22 @@
 		},
 
 		mounted() {
-			this.init();
+			this.queryMovies();
 		},
 		methods: {
 			search() {},
-
-			init() {
-				let params = { page: 1, pagesize: 10 };
+			handleEdit() {},
+			handleDelete() {},
+			changeCurrentpage(page) {
+				this.movieData.page = page;
+				this.queryMovies();
+			},
+			/* 查询电影列表，根据当前页码 发送请求， 更新列表 */
+			queryMovies() {
+				let params = { page: this.movieData.page, pagesize: this.movieData.pagesize };
 				httpApi.movieApi.queryAllMovie(params).then(res => {
 					console.log("home page of movie:", res.data.data);
 					this.movieData = res.data.data;
-					console.log(this.movieData);
 				});
 			},
 		},
