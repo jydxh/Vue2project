@@ -23,7 +23,9 @@
 		<!-- table -->
 
 		<el-table :data="movieData.result">
-			<el-table-column label="封面" width="100" prop="cover"></el-table-column>
+			<el-table-column label="封面">
+				<template slot-scope="scope"> <img :src="scope.row.cover" width="60px" /> </template>
+			</el-table-column>
 			<el-table-column label="标题" width="150" prop="title"></el-table-column>
 			<el-table-column label="主演" width="200" prop="star_actor"></el-table-column>
 			<el-table-column label="上映时间" width="150" prop="showingon"></el-table-column>
