@@ -4,11 +4,12 @@ const BMDURL = BaseUrl.BMDURL;
 
 const movieApi = {
 	/** 新增电影
-	 *
+	 * @param {Obejct}
+	 *  @return Promise
 	 */
-	add() {
+	add(param) {
 		const url = BMDURL + "/movie-info/add";
-		return Myaxios.post(url, params);
+		return Myaxios.post(url, param);
 	},
 	/* 查询电影类型列表 */
 	queryMovieType() {
@@ -17,56 +18,56 @@ const movieApi = {
 	},
 	/* 查询所有电影（分页） */
 	/**
-	 * @params {page:2, pagesize:2 }
-	 * @returns promise
+	 * @param {Object}
+	 * @return Promise
 	 */
-	queryAllMovie() {
+	queryAllMovie(params) {
 		const url = BMDURL + "/movie-infos";
 		return Myaxios.get(url, params);
 	},
 
 	/* 根据电影名字模糊查询所有电影（分页） */
 	/**
-	 * @params {name: "string", page:1 ,pagesize：10}
+	 * @param {name: "string", page:1 ,pagesize：10}
 	 * @returns promise
 	 */
-	queryMovieByName() {
+	queryMovieByName(param) {
 		const url = BMDURL + "/movie-infos/name";
-		return Myaxios.post(url, params);
+		return Myaxios.post(url, param);
 	},
 
 	/**
 	 * @param {id:1}
 	 * @returns promise
 	 */
-	deleteMovie() {
+	deleteMovie(param) {
 		const url = BMDURL + "/movie-info/del";
-		return Myaxios.post(url, params);
+		return Myaxios.post(url, param);
 	},
 
 	/**
 	 * @param {id:3}
-	 * @returns promise
+	 * @returns Promise
 	 */
-	queryMovieById() {
+	queryMovieById(param) {
 		const url = BMDURL + "/movie-info/query";
-		return Myaxios(url, params);
+		return Myaxios(url, param);
 	},
 
 	/**
-	 * @params {id:5, category_id:1, cover:http://localhost:9000/test.jpg, title: "xxx", type:"xxx", star_actor:"xx", showingin: "1000-11-11", score: 9.0, description: "xxx", duration: 107}
-	 * @returns promise
+	 * @param {Object}
+	 * @return Promise
 	 */
-	modifyMovie() {
+	modifyMovie(param) {
 		const url = BMDURL + "/movie-info/update";
-		return Myaxios(url, params);
+		return Myaxios(url, param);
 	},
 
 	/**
-	 * @params {movie_id: 1, actor_ids: 15,16,23,25}
-	 * @returns
+	 * @param {Object}
+	 * @returns Promise
 	 */
-	bindActors() {
+	bindActors(params) {
 		const url = BMDURL + "/movie-info/bind-actors";
 		return Myaxios(url, params);
 	},
