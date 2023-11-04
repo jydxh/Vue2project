@@ -36,10 +36,12 @@
 
 			<el-table-column label="所属类别" align="center" prop="type"></el-table-column>
 			<el-table-column label="操作" align="center" width="180">
-				<el-button size="small" type="info" icon="el-icon-user" circle></el-button>
-				<el-button size="small" type="success" icon="el-icon-picture-outline" circle></el-button>
-				<el-button size="small" type="warning" icon="el-icon-edit" circle></el-button>
-				<el-button size="small" type="danger" icon="el-icon-delete" circle></el-button>
+				<template slot-scope="scope">
+					<el-button size="small" type="info" icon="el-icon-user" circle></el-button>
+					<el-button size="small" type="success" icon="el-icon-picture-outline" circle></el-button>
+					<el-button size="small" type="warning" icon="el-icon-edit" circle></el-button>
+					<el-button size="small" type="danger" icon="el-icon-delete" circle @click="deleteMovie(scope.$index, scope.row)"></el-button>
+				</template>
 			</el-table-column>
 		</el-table>
 
@@ -80,6 +82,40 @@
 			this.queryMovies();
 		},
 		methods: {
+			deleteMovie(index, row) {
+				console.log(index, row); // row = this.movieData.result
+				let param = { id: row.id };
+
+				this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+					confirmButtonText: "确定",
+					cancelButtonText: "取消",
+					type: "warning",
+				})
+					.then(() => {
+						httpApi.movieApi.deleteMovie(param).then(res => {
+							console.log(res);
+							if (res.data.code == 200) {
+								this.$message({
+									type: "success",
+									message: "删除成功!",
+								});
+								this.search();
+							} else {
+								this.$message({
+									type: "fail",
+									message: "删除失败！",
+								});
+							}
+						});
+					})
+					.catch(() => {
+						this.$message({
+							type: "info",
+							message: "已取消删除",
+						});
+					});
+			},
+
 			search() {
 				let params = { name: this.name, page: this.movieData.page, pagesize: this.movieData.pagesize };
 				if (params.name == "") {
@@ -105,7 +141,7 @@
 			queryMovies() {
 				let params = { page: this.movieData.page, pagesize: this.movieData.pagesize };
 				httpApi.movieApi.queryAllMovie(params).then(res => {
-					console.log("home page of movie:", res.data.data);
+					console.log("home page of movie:", res);
 					this.movieData = res.data.data;
 				});
 			},
