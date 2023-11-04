@@ -11,7 +11,7 @@
 		<!-- 搜索表单 -->
 		<el-form @submit.native.prevent :inline="true" class="demo-form-inline">
 			<el-form-item label="电影名称">
-				<el-input v-model="name" @keyup.native.enter="search" placeholder="请输入电影关键字"></el-input>
+				<el-input v-model="name" @keyup.native.enter="search" placeholder="请输入电影关键字" clearable></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="search">查询</el-button>
@@ -65,7 +65,6 @@
 	export default {
 		data() {
 			return {
-				tableData: [],
 				name: "", // save query key words
 				// 保存电影数据
 				movieData: {
@@ -81,12 +80,26 @@
 			this.queryMovies();
 		},
 		methods: {
-			search() {},
-			handleEdit() {},
-			handleDelete() {},
+			search() {
+				let params = { name: this.name, page: this.movieData.page, pagesize: this.movieData.pagesize };
+				if (params.name == "") {
+					this.queryMovies();
+				} else {
+					httpApi.movieApi.queryMovieByName(params).then(res => {
+						console.log(res);
+						this.movieData = res.data.data;
+					});
+				}
+			},
+
 			changeCurrentpage(page) {
-				this.movieData.page = page;
-				this.queryMovies();
+				if (this.name == "") {
+					this.movieData.page = page;
+					this.queryMovies();
+				} else {
+					this.movieData.page = page;
+					this.search();
+				}
 			},
 			/* 查询电影列表，根据当前页码 发送请求， 更新列表 */
 			queryMovies() {
