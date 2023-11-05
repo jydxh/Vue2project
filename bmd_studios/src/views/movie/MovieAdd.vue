@@ -28,19 +28,26 @@
 				<el-input type="text" v-model="form.title"></el-input>
 			</el-form-item>
 			<el-form-item label="电影类型">
-				<el-select multiple placeholder="请选择电影类型" v-model="form.type">
+				<el-select style="width: 100%" multiple placeholder="请选择电影类型" v-model="form.type">
 					<el-option v-for="item in types" :key="item.id" :label="item.typename" :value="item.typename"></el-option>
 				</el-select>
 			</el-form-item>
 			<el-form-item label="电影主演">
-				<el-select v-model="form.starActor" multiple filterable remote reserve-keyword placeholder="请输入关键词">
-					<el-option label="主演1"></el-option>
-					<el-option label="主演2"></el-option>
-					<el-option label="主演3"></el-option>
+				<el-select
+					style="width: 100%"
+					v-model="form.starActor"
+					multiple
+					filterable
+					remote
+					reserve-keyword
+					placeholder="请输入关键词"
+					:remote-method="remoteMethod"
+					:loading="loading">
+					<el-option v-for="item in actors" :key="item.id" :value="item.actor_name" :label="item.actor_name"></el-option>
 				</el-select>
 			</el-form-item>
 			<el-form-item label="上映时间">
-				<el-date-picker type="date" placeholder="选择日期" v-model="form.showingon"> </el-date-picker>
+				<el-date-picker style="width: 100%" type="date" placeholder="选择日期" v-model="form.showingon" value-format="yyyy-MM-dd"> </el-date-picker>
 			</el-form-item>
 			<el-form-item label="电影评分">
 				<el-input type="text" v-model="form.score"></el-input>
@@ -52,7 +59,7 @@
 				<el-input type="textarea" rows="3" v-model="form.description"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-button type="primary">立即创建</el-button>
+				<el-button type="primary" @click="submit">立即创建</el-button>
 				<el-button>取消</el-button>
 			</el-form-item>
 		</el-form>
@@ -77,12 +84,43 @@
 					duration: "",
 				},
 				types: [], // 保存所有电影类型
+				actors: [],
+				loading: false, // 下拉列表是否正在加载
 			};
 		},
 		mounted() {
 			this.initMovieTypes();
 		},
 		methods: {
+			/* 提交表单 */
+			submit() {
+				// 处理form中的字段，改为服务器需要的格式（string）
+				this.form.type = this.form.type.join("／");
+				this.form.starActor = this.form.starActor.join("／");
+
+				console.log(this.form);
+				// 若表单数据收集完毕，发送新增请求即可
+				httpApi.movieApi.add(this.form).then(res => {
+					if (res.data.code == 200) {
+						this.$message("success!");
+						//跳转到列表
+						this.$router.push("/home/movie-list");
+					}
+				});
+			},
+			/* 当在el-select中输入内容，需要异步搜索演员时 执行 */
+			remoteMethod(name) {
+				console.log(name);
+				let params = { name };
+				if (name !== "") {
+					this.loading = true;
+					httpApi.actorApi.queryqueryByNameLike(params).then(res => {
+						console.log("actorquery result:", res);
+						this.actors = res.data.data;
+						this.loading = false;
+					});
+				}
+			},
 			initMovieTypes() {
 				httpApi.movieApi.queryMovieType().then(res => {
 					console.log("queryMovieType result: ", res.data.data);
@@ -110,7 +148,7 @@
 </script>
 
 <style lang="scss" scoped></style>
-<style scoped>
+<style>
 	.avatar-uploader .el-upload {
 		border: 1px dashed #d9d9d9;
 		border-radius: 6px;
