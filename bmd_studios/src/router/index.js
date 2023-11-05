@@ -68,6 +68,23 @@ const routes = [
 			{
 				path: "movie-update",
 				component: () => import("../views/movie/MovieUpdate.vue"),
+				meta: {
+					thumb: ["电影管理", "电影列表", "修改电影信息"],
+				},
+			},
+			{
+				path: "cinema-add",
+				component: () => import("../views/cinema/CinemaAdd.vue"),
+				meta: {
+					thumb: ["电影院管理", "新增电影院"],
+				},
+			},
+			{
+				path: "cinema-list",
+				component: () => import("../views/cinema/CinemaList.vue"),
+				meta: {
+					thumb: ["电影院管理", "电影院列表"],
+				},
 			},
 		],
 	},
