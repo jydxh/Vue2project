@@ -1,11 +1,5 @@
 <template>
 	<div>
-		<el-breadcrumb separator="/">
-			<el-breadcrumb-item>电影管理</el-breadcrumb-item>
-			<el-breadcrumb-item>新增电影</el-breadcrumb-item>
-		</el-breadcrumb>
-		<el-divider></el-divider>
-
 		<!-- 新增电影的表单 -->
 		<el-form label-width="120px" style="width: 600px" ref="form" :model="form" :rules="rules">
 			<el-form-item label="封面图片" prop="cover">

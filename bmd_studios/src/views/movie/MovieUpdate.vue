@@ -1,12 +1,5 @@
 <template>
 	<div>
-		<el-breadcrumb separator="/">
-			<el-breadcrumb-item>电影管理</el-breadcrumb-item>
-			<el-breadcrumb-item>电影列表</el-breadcrumb-item>
-			<el-breadcrumb-item>修改电影信息</el-breadcrumb-item>
-		</el-breadcrumb>
-		<el-divider></el-divider>
-
 		<!-- 新增电影的表单 -->
 		<el-form label-width="120px" style="width: 600px" ref="form" :model="form" :rules="rules">
 			<el-form-item label="封面图片" prop="cover">
@@ -118,6 +111,10 @@
 				// 处理form中的字段，改为服务器需要的格式（string）
 				this.form.type = this.form.type.join("／");
 				this.form.star_actor = this.form.star_actor.join("／");
+				//去掉服务器不要的属性
+				this.form.actor = undefined;
+				this.form.director = undefined;
+				this.form.thumb = undefined;
 
 				console.log(this.form);
 				// 验证表单

@@ -67,9 +67,16 @@
 			</el-aside>
 
 			<el-container>
-				<el-header class="header">
-					<i v-show="!isCollapse" class="el-icon-s-fold" @click="isCollapse = true"></i>
-					<i v-show="isCollapse" class="el-icon-s-unfold" @click="isCollapse = false"></i>
+				<el-header class="header"
+					><div class="breadcrumb">
+						<i v-show="!isCollapse" class="el-icon-s-fold" @click="isCollapse = true"></i>
+						<i v-show="isCollapse" class="el-icon-s-unfold" @click="isCollapse = false"></i>
+						<!-- 面包屑导航 -->
+
+						<el-breadcrumb separator="/" style="margin-left: 10px">
+							<el-breadcrumb-item v-for="item in $route.meta.thumb" :key="item">{{ item }}</el-breadcrumb-item>
+						</el-breadcrumb>
+					</div>
 					<span>未登录</span>
 				</el-header>
 
@@ -93,6 +100,10 @@
 </script>
 
 <style lang="scss" scoped>
+	.breadcrumb {
+		display: flex;
+		align-items: center;
+	}
 	.header {
 		display: flex;
 		align-items: center;

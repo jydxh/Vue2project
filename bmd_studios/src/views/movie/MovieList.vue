@@ -1,13 +1,5 @@
 <template>
 	<div>
-		<!-- 面包屑导航 -->
-		<el-breadcrumb separator=">">
-			<el-breadcrumb-item>首页</el-breadcrumb-item>
-			<el-breadcrumb-item>电影管理</el-breadcrumb-item>
-			<el-breadcrumb-item>电影列表</el-breadcrumb-item>
-		</el-breadcrumb>
-		<el-divider></el-divider>
-
 		<!-- 搜索表单 -->
 		<el-form @submit.native.prevent :inline="true" class="demo-form-inline">
 			<el-form-item label="电影名称">

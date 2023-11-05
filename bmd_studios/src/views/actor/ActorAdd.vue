@@ -1,12 +1,5 @@
 <template>
 	<div>
-		<!-- 面包屑导航 -->
-		<el-breadcrumb separator="/">
-			<el-breadcrumb-item>演员管理</el-breadcrumb-item>
-			<el-breadcrumb-item>新增演员</el-breadcrumb-item>
-		</el-breadcrumb>
-		<el-divider></el-divider>
-
 		<!-- 添加演员表单 -->
 		<el-form ref="form" :model="form" :rules="rules" label-width="100px" style="width: 600px">
 			<el-form-item label="姓名" prop="actorName">

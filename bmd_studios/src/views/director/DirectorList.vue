@@ -1,12 +1,5 @@
 <template>
 	<div>
-		<el-breadcrumb separator="/">
-			<el-breadcrumb-item>导演管理</el-breadcrumb-item>
-			<el-breadcrumb-item>导演列表</el-breadcrumb-item>
-		</el-breadcrumb>
-
-		<el-divider></el-divider>
-
 		<el-form label-width="80px">
 			<el-form-item label="姓名">
 				<el-input placeholder="请输入关键字" v-model="name" style="width: 300px"></el-input>
