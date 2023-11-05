@@ -7,8 +7,8 @@
 		<el-divider></el-divider>
 
 		<!-- 新增电影的表单 -->
-		<el-form label-width="120px" style="width: 600px">
-			<el-form-item label="封面图片">
+		<el-form label-width="120px" style="width: 600px" ref="form" :model="form" :rules="rules">
+			<el-form-item label="封面图片" prop="cover">
 				<el-upload
 					class="avatar-uploader"
 					:action="`${uploadURL}/upload`"
@@ -19,20 +19,20 @@
 					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-form-item>
-			<el-form-item label="电影类别">
+			<el-form-item label="电影类别" prop="categoryId">
 				<el-radio label="1" v-model="form.categoryId">热映</el-radio>
 				<el-radio label="2" v-model="form.categoryId">待映</el-radio>
 				<el-radio label="3" v-model="form.categoryId">经典</el-radio>
 			</el-form-item>
-			<el-form-item label="电影名称">
+			<el-form-item label="电影名称" prop="title">
 				<el-input type="text" v-model="form.title"></el-input>
 			</el-form-item>
-			<el-form-item label="电影类型">
+			<el-form-item label="电影类型" prop="type">
 				<el-select style="width: 100%" multiple placeholder="请选择电影类型" v-model="form.type">
 					<el-option v-for="item in types" :key="item.id" :label="item.typename" :value="item.typename"></el-option>
 				</el-select>
 			</el-form-item>
-			<el-form-item label="电影主演">
+			<el-form-item label="电影主演" prop="starActor">
 				<el-select
 					style="width: 100%"
 					v-model="form.starActor"
@@ -46,16 +46,16 @@
 					<el-option v-for="item in actors" :key="item.id" :value="item.actor_name" :label="item.actor_name"></el-option>
 				</el-select>
 			</el-form-item>
-			<el-form-item label="上映时间">
+			<el-form-item label="上映时间" prop="showingon">
 				<el-date-picker style="width: 100%" type="date" placeholder="选择日期" v-model="form.showingon" value-format="yyyy-MM-dd"> </el-date-picker>
 			</el-form-item>
-			<el-form-item label="电影评分">
+			<el-form-item label="电影评分" prop="score">
 				<el-input type="text" v-model="form.score"></el-input>
 			</el-form-item>
-			<el-form-item label="电影时长">
+			<el-form-item label="电影时长" prop="duration">
 				<el-input type="text" v-model="form.duration"></el-input>
 			</el-form-item>
-			<el-form-item label="电影简介">
+			<el-form-item label="电影简介" prop="description">
 				<el-input type="textarea" rows="3" v-model="form.description"></el-input>
 			</el-form-item>
 			<el-form-item>
@@ -77,11 +77,22 @@
 					cover: "",
 					title: "",
 					type: [],
-					starActor: "",
+					starActor: [],
 					showingon: "",
 					score: "",
 					description: "",
 					duration: "",
+				},
+				rules: {
+					categoryId: [{ required: true, message: "选项不能为空", trigger: "blur" }],
+					cover: [{ required: true, message: "选项不能为空", trigger: "blur" }],
+					title: [{ required: true, message: "选项不能为空", trigger: "blur" }],
+					type: [{ required: true, message: "选项不能为空", trigger: "change" }],
+					starActor: [{ required: true, message: "选项不能为空", trigger: "change" }],
+					showingon: [{ required: true, message: "选项不能为空", trigger: "blur" }],
+					score: [{ required: true, message: "选项不能为空", trigger: "blur" }],
+					description: [{ required: true, message: "选项不能为空", trigger: "blur" }],
+					duration: [{ required: true, message: "选项不能为空", trigger: "blur" }],
 				},
 				types: [], // 保存所有电影类型
 				actors: [],
@@ -99,15 +110,21 @@
 				this.form.starActor = this.form.starActor.join("／");
 
 				console.log(this.form);
-				// 若表单数据收集完毕，发送新增请求即可
-				httpApi.movieApi.add(this.form).then(res => {
-					if (res.data.code == 200) {
-						this.$message("success!");
-						//跳转到列表
-						this.$router.push("/home/movie-list");
+				// 验证表单
+				this.$refs["form"].validate(valid => {
+					if (valid) {
+						httpApi.movieApi.add(this.form).then(res => {
+							if (res.data.code == 200) {
+								this.$message({ type: "success", message: "添加成功！" });
+								//刷新当前网页
+								this.$router.go(0);
+							}
+						});
 					}
 				});
 			},
+			// 若表单数据收集完毕，发送新增请求即可
+
 			/* 当在el-select中输入内容，需要异步搜索演员时 执行 */
 			remoteMethod(name) {
 				console.log(name);
