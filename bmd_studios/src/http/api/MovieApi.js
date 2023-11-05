@@ -49,18 +49,18 @@ const movieApi = {
 	 * @param {id:3}
 	 * @returns Promise
 	 */
-	queryMovieById(param) {
+	queryById(param) {
 		const url = BMDURL + "/movie-info/query";
-		return Myaxios(url, param);
+		return Myaxios.get(url, param);
 	},
 
 	/**
 	 * @param {Object}
 	 * @return Promise
 	 */
-	modifyMovie(param) {
+	update(param) {
 		const url = BMDURL + "/movie-info/update";
-		return Myaxios(url, param);
+		return Myaxios.post(url, param);
 	},
 
 	/**

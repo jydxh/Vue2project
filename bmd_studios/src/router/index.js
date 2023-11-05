@@ -38,6 +38,14 @@ const routes = [
 				path: "movie-add",
 				component: () => import("../views/movie/MovieAdd.vue"),
 			},
+			{
+				path: "movie-update/:id",
+				component: () => import("../views/movie/MovieUpdate.vue"),
+			},
+			{
+				path: "movie-update",
+				component: () => import("../views/movie/MovieUpdate.vue"),
+			},
 		],
 	},
 	{

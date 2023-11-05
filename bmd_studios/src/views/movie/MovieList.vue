@@ -39,7 +39,7 @@
 				<template slot-scope="scope">
 					<el-button size="small" type="info" icon="el-icon-user" circle></el-button>
 					<el-button size="small" type="success" icon="el-icon-picture-outline" circle></el-button>
-					<el-button size="small" type="warning" icon="el-icon-edit" circle></el-button>
+					<el-button size="small" type="warning" icon="el-icon-edit" circle @click="updateMovie(scope.row.id)"></el-button>
 					<el-button size="small" type="danger" icon="el-icon-delete" circle @click="deleteMovie(scope.$index, scope.row)"></el-button>
 				</template>
 			</el-table-column>
@@ -82,6 +82,11 @@
 			this.queryMovies();
 		},
 		methods: {
+			/* 修改电影 */
+			updateMovie(id) {
+				console.log(id);
+				this.$router.push(`/home/movie-update/${id}`);
+			},
 			deleteMovie(index, row) {
 				console.log(index, row); // row = this.movieData.result
 				let param = { id: row.id };
