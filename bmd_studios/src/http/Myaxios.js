@@ -1,30 +1,39 @@
-// Myaxios.js
-import qs from "qs";
-import axios from "axios";
-const instance = axios.create();
-let Myaxios = {
-	// short cut /**
-	/**
-	 *发送get请求
-	 * @param {string} url
-	 * @param {object} params
-	 * @returns Promise use .then or .catch to use the result
-	 */
+// MyAxios.js
+import axios from 'axios'
+import qs from 'qs'
+// 创建axios实例
+const instance = axios.create()
 
-	get(url, params) {
-		return instance({
-			url: url,
-			method: "GET",
-			params: params,
-		});
-	},
-	post(url, params) {
-		return instance({
-			url: url,
-			method: "POST",
-			data: qs.stringify(params),
-		});
-	},
-};
+let myaxios = {
 
-export default Myaxios;
+    /**
+     * 发送get请求
+     * @param {string} url  请求路径
+     * @param {object} params  请求参数（对象的形式传递）
+     * @returns Promise
+     */
+    get(url, params){
+        return instance({
+            url, 
+            method: 'GET', 
+            params
+        })
+    },
+
+    /**
+     * 发送post请求
+     * @param {string} url  请求路径
+     * @param {object} params  请求参数（对象的形式传递）
+     * @returns Promise
+     */
+    post(url, params){
+        return instance({
+            url, 
+            method: 'POST',
+            data: qs.stringify(params)
+        })
+    }
+
+}
+
+export default myaxios;

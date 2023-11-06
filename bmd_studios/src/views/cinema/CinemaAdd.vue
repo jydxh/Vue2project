@@ -30,7 +30,7 @@
 				<el-input clearable v-model="form.latitude" type="text"></el-input>
 			</el-form-item>
 			<el-form-item label="选择标签">
-				<el-select v-model="form.tags">
+				<el-select v-model="form.tags" style="width: 100%">
 					<el-option label="3DMax" value="3DMax"></el-option>
 					<el-option label="2DMax" value="2DMax"></el-option>
 				</el-select>

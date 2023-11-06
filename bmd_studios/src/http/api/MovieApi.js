@@ -1,75 +1,59 @@
-import Myaxios from "../Myaxios";
-import BaseUrl from "../BaseUrl";
-const BMDURL = BaseUrl.BMDURL;
+// Movie.js 封装电影模块相关接口
+import myaxios from "../Myaxios";
+import BASEURL from "../BaseUrl";
+const BMDURL = BASEURL.BMDURL;
 
 const movieApi = {
-	/** 新增电影
-	 * @param {Obejct}
-	 *  @return Promise
-	 */
-	add(param) {
-		const url = BMDURL + "/movie-info/add";
-		return Myaxios.post(url, param);
-	},
-	/* 查询电影类型列表 */
-	queryMovieType() {
-		const url = BMDURL + "/movie-types";
-		return Myaxios.get(url);
-	},
-	/* 查询所有电影（分页） */
-	/**
-	 * @param {Object}
-	 * @return Promise
-	 */
-	queryAllMovie(params) {
-		const url = BMDURL + "/movie-infos";
-		return Myaxios.get(url, params);
+	/** 根据id，更新电影信息 */
+	update(params) {
+		let url = BMDURL + "/movie-info/update";
+		return myaxios.post(url, params);
 	},
 
-	/* 根据电影名字模糊查询所有电影（分页） */
-	/**
-	 * @param {name: "string", page:1 ,pagesize：10}
-	 * @returns promise
-	 */
-	queryMovieByName(param) {
-		const url = BMDURL + "/movie-infos/name";
-		return Myaxios.post(url, param);
+	/** 通过id查询电影详情 */
+	queryById(params) {
+		let url = BMDURL + "/movie-info/query";
+		return myaxios.get(url, params);
 	},
 
 	/**
-	 * @param {id:1}
-	 * @returns promise
+	 * 新增电影
+	 * @param {Object} params
 	 */
-	deleteMovie(param) {
-		const url = BMDURL + "/movie-info/del";
-		return Myaxios.post(url, param);
+	add(params) {
+		let url = BMDURL + "/movie-info/add";
+		return myaxios.post(url, params);
+	},
+
+	/** 查询电影类型 */
+	queryTypes() {
+		let url = BMDURL + "/movie-types";
+		return myaxios.get(url);
 	},
 
 	/**
-	 * @param {id:3}
-	 * @returns Promise
+	 * 删除业务
+	 * @param {Object} params 请求参数：{id:1}
 	 */
-	queryById(param) {
-		const url = BMDURL + "/movie-info/query";
-		return Myaxios.get(url, param);
+	delete(params) {
+		let url = BMDURL + "/movie-info/del";
+		return myaxios.post(url, params);
 	},
 
 	/**
-	 * @param {Object}
-	 * @return Promise
+	 * 根据电影名称关键字，模糊查询电影列表
+	 * @param {Object} params 请求参数对象
+	 *        params的格式如： {name:关键字, page:1, pagesize:2}
 	 */
-	update(param) {
-		const url = BMDURL + "/movie-info/update";
-		return Myaxios.post(url, param);
+	queryByNameLike(params) {
+		let url = BMDURL + "/movie-infos/name";
+		return myaxios.post(url, params);
 	},
 
-	/**
-	 * @param {Object}
-	 * @returns Promise
-	 */
-	bindActors(params) {
-		const url = BMDURL + "/movie-info/bind-actors";
-		return Myaxios(url, params);
+	/** 查询所有电影，接收参数params: {page:1, pagesize:10} */
+	queryAll(params) {
+		let url = BMDURL + "/movie-infos";
+		return myaxios.get(url, params);
 	},
 };
 
