@@ -1,7 +1,7 @@
 <template>
 	<div>
-		<el-form :model="form" label-width="120px" style="width: 650px">
-			<el-form-item label="电影院名称">
+		<el-form :model="form" :rules="rules" ref="form" label-width="120px" style="width: 650px">
+			<el-form-item label="电影院名称" prop="cinema_name">
 				<el-input v-model="form.cinema_name" type="text"></el-input>
 			</el-form-item>
 
@@ -9,36 +9,35 @@
 				<div id="container" style="height: 200px; border: 1px solid #666"></div>
 			</el-form-item>
 
-			<el-form-item label="详细地址">
+			<el-form-item label="详细地址" prop="address">
 				<el-input clearable v-model="form.address" type="text"></el-input>
 			</el-form-item>
 
-			<el-form-item label="省份"> <el-input clearable v-model="form.province" type="text"> </el-input></el-form-item>
+			<el-form-item label="省份" prop="province"> <el-input clearable v-model="form.province" type="text"> </el-input></el-form-item>
 
-			<el-form-item label="城市">
+			<el-form-item label="城市" prop="city">
 				<el-input clearable v-model="form.city" type="text"></el-input>
 			</el-form-item>
 
-			<el-form-item label="地区">
+			<el-form-item label="地区" prop="district">
 				<el-input clearable v-model="form.district" type="text"></el-input>
 			</el-form-item>
 
-			<el-form-item label="经度">
+			<el-form-item label="经度" prop="longitude">
 				<el-input clearable v-model="form.longitude" type="text"></el-input>
 			</el-form-item>
-			<el-form-item label="纬度">
+			<el-form-item label="纬度" prop="latitude">
 				<el-input clearable v-model="form.latitude" type="text"></el-input>
 			</el-form-item>
-			<el-form-item label="选择标签">
-				<el-select v-model="form.tags" style="width: 100%">
-					<el-option label="3DMax" value="3DMax"></el-option>
-					<el-option label="2DMax" value="2DMax"></el-option>
+			<el-form-item label="选择标签" prop="tags">
+				<el-select multiple v-model="form.tags" style="width: 100%">
+					<el-option v-for="item in tags" :key="item.id" :value="item.tagname" :label="item.tagname"></el-option>
 				</el-select>
 			</el-form-item>
 
 			<el-form-item>
-				<el-button type="primary">新增电影院</el-button>
-				<el-button>重置表格</el-button>
+				<el-button type="primary" @click="submit">新增电影院</el-button>
+				<el-button @click="resetForm('form')">重置表格</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -50,6 +49,7 @@
 	export default {
 		data() {
 			return {
+				tags: [], // 保存初始化的所有的电影院标签
 				form: {
 					cinema_name: "",
 					address: "",
@@ -60,16 +60,48 @@
 					latitude: "",
 					tags: [],
 				},
+				rules: {
+					cinema_name: [{ required: true, message: "please enter a name", trigger: "blur" }],
+					address: [{ required: true, message: "address is needed", trigger: "blur" }],
+					province: [{ required: true, message: "province is needed", trigger: "blur" }],
+					city: [{ required: true, message: "city is needed", trigger: "blur" }],
+					district: [{ required: true, message: "district is needed", trigger: "blur" }],
+					longitude: [{ required: true, message: "longitude is needed", trigger: "change" }],
+					latitude: [{ required: true, message: "latitude is needed", trigger: "change" }],
+					tags: [{ required: true, message: "tags are needed!", trigger: "change" }],
+				},
 			};
 		},
 		mounted() {
 			this.initMap(); // 初始化地图
 			// 初始化电影标签选择器 select 的option列表
-			httpApi.cinemaApi.queryTypes.then(res => {
-				console.log(res);
+			httpApi.cinemaApi.queryTypes().then(res => {
+				console.log("queryTypes:", res.data.data);
+				this.tags = res.data.data;
 			});
 		},
 		methods: {
+			resetForm(form) {
+				this.$refs[form].resetFields();
+			},
+			submit() {
+				this.$refs["form"].validate(valid => {
+					if (valid) {
+						this.form.tags = this.form.tags.join("／");
+						console.log(this.form);
+						httpApi.cinemaApi.add(this.form).then(res => {
+							console.log(res);
+							if (res.data.code == 200) {
+								this.$router.push("/home/cinema-list");
+								this.$message({ type: "success", message: "success!" });
+							}
+						});
+					} else {
+						this.$message({ type: "fail", message: "adding fail, check you input form" });
+						return false;
+					}
+				});
+			},
 			initMap() {
 				AMapLoader.load({
 					key: "0506ae0d5b52767350f5812bdb67e915", // 申请好的Web端开发者Key，首次调用 load 时必填
