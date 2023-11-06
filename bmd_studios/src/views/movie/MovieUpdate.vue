@@ -139,7 +139,7 @@
 				let params = { name };
 				if (name !== "") {
 					this.loading = true;
-					httpApi.actorApi.queryqueryByNameLike(params).then(res => {
+					httpApi.actorApi.queryByNameLike(params).then(res => {
 						console.log("actorquery result:", res);
 						this.actors = res.data.data;
 						this.loading = false;
@@ -147,7 +147,7 @@
 				}
 			},
 			initMovieTypes() {
-				httpApi.movieApi.queryMovieType().then(res => {
+				httpApi.movieApi.queryTypes().then(res => {
 					console.log("queryMovieType result: ", res.data.data);
 					this.types = res.data.data;
 				});

@@ -89,7 +89,7 @@
 					type: "warning",
 				})
 					.then(() => {
-						httpApi.movieApi.deleteMovie(param).then(res => {
+						httpApi.movieApi.delete(param).then(res => {
 							console.log(res);
 							if (res.data.code == 200) {
 								this.$message({
@@ -118,7 +118,7 @@
 				if (params.name == "") {
 					this.queryMovies();
 				} else {
-					httpApi.movieApi.queryMovieByName(params).then(res => {
+					httpApi.movieApi.queryByNameLike(params).then(res => {
 						console.log(res);
 						this.movieData = res.data.data;
 					});
@@ -137,7 +137,7 @@
 			/* 查询电影列表，根据当前页码 发送请求， 更新列表 */
 			queryMovies() {
 				let params = { page: this.movieData.page, pagesize: this.movieData.pagesize };
-				httpApi.movieApi.queryAllMovie(params).then(res => {
+				httpApi.movieApi.queryAll(params).then(res => {
 					console.log("home page of movie:", res);
 					this.movieData = res.data.data;
 				});

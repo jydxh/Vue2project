@@ -46,6 +46,7 @@
 
 <script>
 	import AMapLoader from "@amap/amap-jsapi-loader";
+	import httpApi from "../../http";
 	export default {
 		data() {
 			return {
@@ -63,6 +64,10 @@
 		},
 		mounted() {
 			this.initMap(); // 初始化地图
+			// 初始化电影标签选择器 select 的option列表
+			httpApi.cinemaApi.queryTypes.then(res => {
+				console.log(res);
+			});
 		},
 		methods: {
 			initMap() {

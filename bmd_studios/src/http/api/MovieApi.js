@@ -17,7 +17,7 @@ const movieApi = {
 	},
 
 	/**
-	 * 新增电影
+	 * 新增电影d
 	 * @param {Object} params
 	 */
 	add(params) {

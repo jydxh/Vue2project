@@ -93,7 +93,7 @@
 			search() {
 				let para = { name: this.name };
 				this.name !== ""
-					? httpApi.actorApi.queryqueryByNameLike(para).then(res => {
+					? httpApi.actorApi.queryByNameLike(para).then(res => {
 							console.log("query results:", res);
 							this.actors = res.data.data; //更新列表
 							if (this.actors.length === 0) {
