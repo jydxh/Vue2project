@@ -16,7 +16,7 @@
 			</el-table-column>
 			<el-table-column label="操作" align="center" width="200">
 				<template slot-scope="scope">
-					<el-button size="small" type="success" icon="el-icon-map-location" circle></el-button>
+					<el-button size="small" type="success" icon="el-icon-map-location" circle @click="moveTo(scope.row)"></el-button>
 					<el-button size="small" type="info" icon="el-icon-video-camera-solid" circle></el-button>
 					<el-button size="small" type="warning" icon="el-icon-edit" circle></el-button>
 					<el-button size="small" type="danger" icon="el-icon-delete" circle @click="deleteCinema(scope.$index, scope.row)"></el-button>
@@ -33,17 +33,27 @@
 		data() {
 			return {
 				cinema: [],
+				map: null,
+				AMap: null,
 			};
 		},
 		name: "map-view",
 		mounted() {
 			this.initAMap();
-			this.initData();
+			//	this.initData(); 要让地图加载完毕后再加载data 才能保证地图上显示出 data中 电影院位置
 		},
 		unmounted() {
 			this.map?.destroy();
 		},
 		methods: {
+			//getAddress
+			moveTo(cinema) {
+				console.log(cinema);
+				let lng = cinema.longitude;
+				let lat = cinema.latitude;
+				// 将地图的中心位置移动到该经纬度的位置
+				this.map.setZoomAndCenter(14, [lng, lat], false, 700);
+			},
 			//delete
 			deleteCinema(index, row) {
 				this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -77,12 +87,14 @@
 					plugins: [], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
 				})
 					.then(AMap => {
+						this.AMap = AMap;
 						this.map = new AMap.Map("container", {
 							// 设置地图容器id
 							viewMode: "3D", // 是否为3D地图模式
 							zoom: 11, // 初始化地图级别
 							center: [116.397428, 39.90923], // 初始化地图中心点位置
 						});
+						this.initData();
 					})
 					.catch(e => {
 						console.log(e);
@@ -93,6 +105,16 @@
 				httpApi.cinemaApi.queryAll().then(res => {
 					console.log(res.data.data);
 					this.cinema = res.data.data;
+					// 此处可以为每一家电影院都添加一个点标记到地图上
+					this.cinema.forEach(item => {
+						let lng = item.longitude;
+						let lat = item.latitude;
+						let marker = new this.AMap.Marker({
+							position: new this.AMap.LngLat(lng, lat),
+							title: item.cinema_name,
+						});
+						this.map.add(marker);
+					});
 				});
 			},
 		},
