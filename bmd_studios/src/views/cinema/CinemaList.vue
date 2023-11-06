@@ -17,7 +17,12 @@
 			<el-table-column label="操作" align="center" width="200">
 				<template slot-scope="scope">
 					<el-button size="small" type="success" icon="el-icon-map-location" circle @click="moveTo(scope.row)"></el-button>
-					<el-button size="small" type="info" icon="el-icon-video-camera-solid" circle></el-button>
+					<el-button
+						@click="$router.push('/home/cinema-list-room/' + scope.row.id)"
+						size="small"
+						type="info"
+						icon="el-icon-video-camera-solid"
+						circle></el-button>
 					<el-button size="small" type="warning" icon="el-icon-edit" circle></el-button>
 					<el-button size="small" type="danger" icon="el-icon-delete" circle @click="deleteCinema(scope.$index, scope.row)"></el-button>
 				</template>
