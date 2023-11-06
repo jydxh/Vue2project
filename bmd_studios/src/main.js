@@ -13,7 +13,10 @@ const uploadURL = BaseUrl.UPLOADURL;
 Vue.prototype.uploadURL = uploadURL;
 
 Vue.config.productionTip = false;
-
+//设置高德地图安全密钥
+window._AMapSecurityConfig = {
+	securityJsCode: "a3a745d98e36965a1a002e35bf5995d4",
+};
 new Vue({
 	router,
 	store,
