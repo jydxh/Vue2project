@@ -82,8 +82,8 @@
 							//此处为什么用箭头函数才能加载出页面？解释：由于array function的this 实际是继承的它定义时所处的全局执行环境中的this，所以指向Vue对象，如果用function declaration，则指向调用次函数对象的上下文，为this.map对象，则无法获取到vue对象，导致后面对this.form对象中的key 无法赋值！！！ important！！！
 							let lng = e.lnglat.getLng();
 							let lat = e.lnglat.getLat();
-							/* this.form.longitude = lng;
-							this.form.latitude = lat; */
+							this.form.longitude = lng;
+							this.form.latitude = lat;
 							console.log(lng, lat);
 
 							//调用接口输入当前坐标 获取结果
