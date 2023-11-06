@@ -19,7 +19,7 @@
 					<el-button size="small" type="success" icon="el-icon-map-location" circle></el-button>
 					<el-button size="small" type="info" icon="el-icon-video-camera-solid" circle></el-button>
 					<el-button size="small" type="warning" icon="el-icon-edit" circle></el-button>
-					<el-button size="small" type="danger" icon="el-icon-delete" circle></el-button>
+					<el-button size="small" type="danger" icon="el-icon-delete" circle @click="deleteCinema(scope.$index, scope.row)"></el-button>
 				</template>
 			</el-table-column>
 		</el-table>
@@ -44,6 +44,32 @@
 			this.map?.destroy();
 		},
 		methods: {
+			//delete
+			deleteCinema(index, row) {
+				this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
+					confirmButtonText: "确定",
+					cancelButtonText: "取消",
+					type: "warning",
+				})
+					.then(() => {
+						httpApi.cinemaApi.delete({ id: row.id }).then(res => {
+							console.log(res);
+							if (res.data.code == 200) {
+								this.$message({
+									type: "success",
+									message: "删除成功!",
+								});
+								this.$router.go();
+							}
+						});
+					})
+					.catch(() => {
+						this.$message({
+							type: "info",
+							message: "已取消删除",
+						});
+					});
+			},
 			initAMap() {
 				AMapLoader.load({
 					key: "0506ae0d5b52767350f5812bdb67e915", // 申请好的Web端开发者Key，首次调用 load 时必填

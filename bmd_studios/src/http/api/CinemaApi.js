@@ -5,6 +5,11 @@ import URLENV from "@/http/BaseUrl";
 const BMDURL = URLENV.BMDURL;
 
 const CinemaApi = {
+	/**	删除影院 */
+	delete(param) {
+		let url = BMDURL + "/cinema/del";
+		return myaxios.post(url, param);
+	},
 	/** 查询所有电影院 */
 	queryAll() {
 		let url = BMDURL + "/cinemas";
