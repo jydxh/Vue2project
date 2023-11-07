@@ -93,6 +93,13 @@ const routes = [
 					thumb: ["电影院管理", "电影院列表", "放映厅列表"],
 				},
 			},
+			{
+				path: "showingon-plan-add/:roomId",
+				component: () => import("../views/cinema/ShowingonPlanAdd.vue"),
+				meta: {
+					thumb: ["电影院管理", "电影院列表", "放映厅列表", "添加放映计划"],
+				},
+			},
 		],
 	},
 	{

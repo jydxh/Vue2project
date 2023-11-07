@@ -13,7 +13,7 @@
 			<el-table-column label="操作" align="center">
 				<template slot-scope="scope">
 					<el-button size="small" type="success" icon="el-icon-view" circle></el-button>
-					<el-button size="small" type="primary" icon="el-icon-plus" circle></el-button>
+					<el-button size="small" type="primary" icon="el-icon-plus" circle @click="$router.push('/home/showingon-plan-add/' + scope.row.id)"></el-button>
 					<el-button size="small" type="warning" icon="el-icon-menu" circle></el-button>
 					<el-button size="small" type="danger" icon="el-icon-delete" circle @click="deleteRoom(scope.row)"></el-button>
 				</template>
