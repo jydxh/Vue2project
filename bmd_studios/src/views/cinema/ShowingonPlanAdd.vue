@@ -8,28 +8,45 @@
 
 		<!-- form -->
 		<el-form ref="form" style="width: 800px" :model="form" :rules="rules" label-width="120px">
-			<el-form-item label="电影名称">
-				<el-select placeholder="请电影名称" style="width: 100%">
-					<el-option label="1" value="1"></el-option>
+			<el-form-item label="选择电影">
+				<el-select
+					placeholder="请电影名称"
+					style="width: 100%"
+					v-model="form.movie_id"
+					filterable
+					remote
+					reserve-keyword
+					:remote-method="remoteMethod"
+					:loading="loading">
+					<el-option v-for="item in options" :key="item.id" :label="item.title" :value="item.id"></el-option>
 				</el-select>
 			</el-form-item>
 
-			<el-form-item label="放映日期" prop="date1">
+			<el-form-item label="放映日期" prop="showingon_date & showingon_time">
 				<el-col :span="11">
-					<el-date-picker type="date" placeholder="选择日期" v-model="form.date1" style="width: 100%"></el-date-picker>
+					<el-date-picker type="date" placeholder="选择日期" v-model="form.showingon_date" style="width: 100%" value-format="yyyy-MM-dd"></el-date-picker>
 				</el-col>
 				<el-col class="line" :span="1" style="text-align: center">- </el-col>
 				<el-col :span="11">
-					<el-time-picker placeholder="选择时间" v-model="form.date2" style="width: 100%"></el-time-picker>
+					<el-time-select
+						placeholder="选择时间"
+						v-model="form.showingon_time"
+						style="width: 100%"
+						value-format="HH:mm"
+						:picker-options="{
+							start: '06:00',
+							step: '00:15',
+							end: '23:59',
+						}"></el-time-select>
 				</el-col>
 			</el-form-item>
 
-			<el-form-item label="票价">
-				<el-input width="300px"></el-input>
+			<el-form-item label="票价" prop="price">
+				<el-input width="300px" v-model="form.price"></el-input>
 			</el-form-item>
 
-			<el-form-item label="立即发布">
-				<el-switch></el-switch>
+			<el-form-item label="立即发布" prop="status">
+				<el-switch v-model="form.status"></el-switch>
 			</el-form-item>
 
 			<el-form-item>
@@ -45,20 +62,24 @@
 	export default {
 		data() {
 			return {
+				options: [],
+				loading: false,
 				roomData: {},
 				form: {
-					movie: "",
-					date1: "",
-					date2: "",
+					cinema_id: "", //this.roomData.cinema_id,
+					cinema_room_id: "", //this.$route.params.roomId,
+					movie_id: "",
+					showingon_date: "",
+					showingon_time: "",
 					price: "0",
-					delivery: true,
+					status: true,
 				},
 				rules: {
-					movie: [{ required: true, message: "cannot be empty", trigger: blur }],
-					date1: [{ required: true, message: "cannot be empty", trigger: blur }],
-					date2: [{ required: true, message: "cannot be empty", trigger: blur }],
-					price: [{ required: true, message: "cannot be empty", trigger: blur }],
-					delivery: [{ required: true, message: "cannot be empty", trigger: blur }],
+					movie_id: [{ required: true, message: "cannot be empty", trigger: "change" }],
+					showingon_date: [{ required: true, message: "cannot be empty", trigger: "change" }],
+					showingon_time: [{ required: true, message: "cannot be empty", trigger: "change" }],
+					price: [{ required: true, message: "cannot be empty", trigger: "blur" }],
+					status: [{ required: true, message: "cannot be empty", trigger: "change" }],
 				},
 			};
 		},
@@ -67,6 +88,26 @@
 		},
 
 		methods: {
+			submit() {
+				this.form.cinema_id = this.roomData.cinema_id;
+				this.form.cinema_room_id = this.$route.params.roomId;
+				this.form.status ? (this.form.status = 1) : (this.form.status = 0);
+
+				console.log("form:", this.form);
+			},
+			remoteMethod(query) {
+				if (query !== "") {
+					this.loading = true;
+					let params = { name: query, page: 1, pagesize: 100 };
+					httpApi.movieApi.queryByNameLike(params).then(res => {
+						this.loading = false;
+						console.log(res.data.data);
+						this.options = res.data.data.result;
+					});
+				} else {
+					this.options = [];
+				}
+			},
 			initRoomData() {
 				let id = this.$route.params.roomId;
 				httpApi.cinemaRoomApi.queryById({ id }).then(res => {
