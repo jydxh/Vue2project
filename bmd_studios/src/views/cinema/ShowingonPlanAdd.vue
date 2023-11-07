@@ -8,7 +8,7 @@
 
 		<!-- form -->
 		<el-form ref="form" style="width: 800px" :model="form" :rules="rules" label-width="120px">
-			<el-form-item label="选择电影">
+			<el-form-item label="选择电影" prop="movie_id">
 				<el-select
 					placeholder="请电影名称"
 					style="width: 100%"
@@ -22,7 +22,7 @@
 				</el-select>
 			</el-form-item>
 
-			<el-form-item label="放映日期" prop="showingon_date & showingon_time">
+			<el-form-item label="放映日期" prop="showingon_date">
 				<el-col :span="11">
 					<el-date-picker type="date" placeholder="选择日期" v-model="form.showingon_date" style="width: 100%" value-format="yyyy-MM-dd"></el-date-picker>
 				</el-col>
@@ -46,12 +46,12 @@
 			</el-form-item>
 
 			<el-form-item label="立即发布" prop="status">
-				<el-switch v-model="form.status"></el-switch>
+				<el-switch v-model="form.status" active-value="1" inactive-value="0"></el-switch>
 			</el-form-item>
 
 			<el-form-item>
 				<el-button type="primary" @click="submit">立即新增该计划</el-button>
-				<el-button>取消</el-button>
+				<el-button @click="resetForm('form')">取消</el-button>
 			</el-form-item>
 		</el-form>
 	</div>
@@ -62,6 +62,7 @@
 	export default {
 		data() {
 			return {
+				movie_name: "",
 				options: [],
 				loading: false,
 				roomData: {},
@@ -71,11 +72,11 @@
 					movie_id: "",
 					showingon_date: "",
 					showingon_time: "",
-					price: "0",
+					price: "30",
 					status: true,
 				},
 				rules: {
-					movie_id: [{ required: true, message: "cannot be empty", trigger: "change" }],
+					movie_id: [{ required: true, message: "cannot be empty", trigger: "blur" }],
 					showingon_date: [{ required: true, message: "cannot be empty", trigger: "change" }],
 					showingon_time: [{ required: true, message: "cannot be empty", trigger: "change" }],
 					price: [{ required: true, message: "cannot be empty", trigger: "blur" }],
@@ -88,12 +89,46 @@
 		},
 
 		methods: {
+			getMovieName(id) {
+				httpApi.movieApi.queryById({ id }).then(res => {
+					console.log(res.data);
+					this.movie_name = res.data.data.title;
+				});
+			},
+			resetForm(formName) {
+				this.$refs[formName].resetFields();
+				this.form.showingon_time = "";
+			},
 			submit() {
 				this.form.cinema_id = this.roomData.cinema_id;
 				this.form.cinema_room_id = this.$route.params.roomId;
-				this.form.status ? (this.form.status = 1) : (this.form.status = 0);
-
+				//this.form.status ? (this.form.status = 1) : (this.form.status = 0);
 				console.log("form:", this.form);
+				this.getMovieName(this.form.movie_id);
+				// 该后端代码有问题 会导致服务器崩溃  RowDataPacket { seat_template: null }
+				/* httpApi.showingonPlanApi.add(this.form).then(res => {
+						console.log(res);
+					}); */
+
+				this.$refs["form"].validate(valid => {
+					if (valid) {
+						this.$notify({
+							type: "success",
+							title: "成功添加排片计划",
+							dangerouslyUseHTMLString: true,
+							message: `
+								<p>放映厅：${this.roomData.cinema_room_name}</p>
+								<p>电影名称：${this.movie_name}</p>
+								<p>上映时间：${this.form.showingon_date} &nbsp; ${this.form.showingon_time}</p>
+								<p>票价： ${this.form.price}</p>
+								`,
+						});
+					} else {
+						this.$alert("wrong!");
+					}
+				});
+
+				this.resetForm("form");
 			},
 			remoteMethod(query) {
 				if (query !== "") {
