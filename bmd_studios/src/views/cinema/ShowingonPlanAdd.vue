@@ -1,7 +1,7 @@
 <template>
 	<div>
-		为 <span style="color: #3f9dff; font-weight: bold">百慕大影城 （双井店 ）</span>的
-		<span style="color: #3f9dff; font-weight: bold">1号厅 （4K厅） </span>
+		为 <span style="color: #3f9dff; font-weight: bold">{{ roomData.cinema_name }}</span> 的
+		<span style="color: #3f9dff; font-weight: bold">{{ roomData.cinema_room_name }} （{{ roomData.cinema_room_type }}） </span>
 		添加排片计划
 
 		<el-divider></el-divider>
@@ -41,9 +41,11 @@
 </template>
 
 <script>
+	import httpApi from "../../http";
 	export default {
 		data() {
 			return {
+				roomData: {},
 				form: {
 					movie: "",
 					date1: "",
@@ -61,15 +63,16 @@
 			};
 		},
 		mounted() {
-			this.initData();
+			this.initRoomData();
 		},
 
 		methods: {
-			initData() {
-				let roomId = this.$route.params.roomId;
-				let cinemaId = this.$route.params.cinemaId;
-				console.log(roomId);
-				console.log("cinemaID:", cinemaId);
+			initRoomData() {
+				let id = this.$route.params.roomId;
+				httpApi.cinemaRoomApi.queryById({ id }).then(res => {
+					console.log(res.data.data);
+					this.roomData = res.data.data;
+				});
 			},
 		},
 	};
