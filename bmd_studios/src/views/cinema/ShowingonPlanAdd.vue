@@ -73,7 +73,7 @@
 					movie_id: "",
 					showingon_date: "",
 					showingon_time: "",
-					status: true,
+					status: 1,
 					price: "30",
 				},
 				rules: {
