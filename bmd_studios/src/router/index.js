@@ -108,6 +108,13 @@ const routes = [
 					thumb: ["电影院管理", "电影院列表", "放映厅列表", "放映计划表"],
 				},
 			},
+			{
+				path: "seat-template",
+				component: () => import("../views/cinema/CinemaRoomSeatTemplate.vue"),
+				meta: {
+					thumb: ["电影院管理", "电影院列表", "放映厅列表", "配置座位模板"],
+				},
+			},
 		],
 	},
 	{
