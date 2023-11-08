@@ -10,6 +10,7 @@
 		<el-form ref="form" style="width: 800px" :model="form" :rules="rules" label-width="120px">
 			<el-form-item label="选择电影" prop="movie_id">
 				<el-select
+					ref="selector"
 					placeholder="请电影名称"
 					style="width: 100%"
 					v-model="form.movie_id"
@@ -72,8 +73,8 @@
 					movie_id: "",
 					showingon_date: "",
 					showingon_time: "",
-					price: "30",
 					status: true,
+					price: "30",
 				},
 				rules: {
 					movie_id: [{ required: true, message: "cannot be empty", trigger: "blur" }],
@@ -89,36 +90,35 @@
 		},
 
 		methods: {
-			getMovieName(id) {
-				httpApi.movieApi.queryById({ id }).then(res => {
-					console.log(res.data);
-					this.movie_name = res.data.data.title;
-				});
-			},
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
 				this.form.showingon_time = "";
 			},
 			submit() {
+				console.log("this.$refs['selector']: ", this.$refs["selector"]);
 				this.form.cinema_id = this.roomData.cinema_id;
 				this.form.cinema_room_id = this.$route.params.roomId;
 				//this.form.status ? (this.form.status = 1) : (this.form.status = 0);
 				console.log("form:", this.form);
-				this.getMovieName(this.form.movie_id);
-				// 该后端代码有问题 会导致服务器崩溃  RowDataPacket { seat_template: null }
+
+				// 该后端代码有问题，因为seatTemplate还没写，为null，会导致服务器崩溃  RowDataPacket { seat_template: null }
 				/* httpApi.showingonPlanApi.add(this.form).then(res => {
 						console.log(res);
 					}); */
 
 				this.$refs["form"].validate(valid => {
 					if (valid) {
+						httpApi.showingonPlanApi.add(this.form).then(res => {
+							console.log(res);
+						});
+
 						this.$notify({
 							type: "success",
 							title: "成功添加排片计划",
 							dangerouslyUseHTMLString: true,
 							message: `
 								<p>放映厅：${this.roomData.cinema_room_name}</p>
-								<p>电影名称：${this.movie_name}</p>
+								<p>电影名称：《${this.$refs["selector"]._data.selectedLabel}》</p>
 								<p>上映时间：${this.form.showingon_date} &nbsp; ${this.form.showingon_time}</p>
 								<p>票价： ${this.form.price}</p>
 								`,
@@ -128,7 +128,7 @@
 					}
 				});
 
-				this.resetForm("form");
+				//this.resetForm("form");
 			},
 			remoteMethod(query) {
 				if (query !== "") {
