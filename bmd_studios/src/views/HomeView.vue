@@ -92,7 +92,10 @@
 						<el-breadcrumb-item v-for="item in $route.meta.thumb" :key="item">{{ item }}</el-breadcrumb-item>
 					</el-breadcrumb>
 
-					<span>未登录</span>
+					<span>{{ user.username }}</span>
+					<span>--{{ user.nickname }}</span>
+					<span>--{{ user.phone }}</span>
+					<span>--{{ user.email }}</span>
 				</el-header>
 
 				<el-main>
@@ -105,11 +108,16 @@
 </template>
 
 <script>
+	import { mapState } from "vuex";
 	export default {
 		data() {
 			return {
 				isCollapse: false,
 			};
+		},
+
+		computed: {
+			...mapState(["user", "cityname"]),
 		},
 	};
 </script>

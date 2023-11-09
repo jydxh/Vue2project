@@ -55,12 +55,15 @@
 							console.log(res);
 							if (res.data.code == 200) {
 								this.$router.push("/");
+								// 将用户对象存入vuex
+								this.$store.commit("updateUser", res.data.data.user);
 							} else {
 								this.$refs["form"].resetFields();
 								this.$message.error(res.data.msg);
 							}
 						});
 					} else {
+						this.$alert("wrong input!");
 					}
 				});
 			},
