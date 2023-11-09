@@ -134,5 +134,11 @@ const router = new VueRouter({
 	base: process.env.BASE_URL,
 	routes,
 });
+/* 添加路由守护 */
+router.beforeEach((to, from, next) => {
+	console.log(from);
+	console.log(to);
+	next();
+});
 
 export default router;

@@ -92,10 +92,13 @@
 						<el-breadcrumb-item v-for="item in $route.meta.thumb" :key="item">{{ item }}</el-breadcrumb-item>
 					</el-breadcrumb>
 
-					<span>{{ user.username }}</span>
-					<span>--{{ user.nickname }}</span>
-					<span>--{{ user.phone }}</span>
-					<span>--{{ user.email }}</span>
+					<template v-if="user">
+						<span>{{ user.username }}</span
+						>&nbsp;|&nbsp; <span>{{ user.nickname }}</span
+						>&nbsp;|&nbsp; <span>{{ user.phone }}</span
+						>&nbsp;|&nbsp;
+						<span>{{ user.email }}</span>
+					</template>
 				</el-header>
 
 				<el-main>
