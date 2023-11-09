@@ -79,13 +79,15 @@
 
 <script>
 	import SeatSelector from "@/libs/SeatSelector.js";
+
+	import httpApi from "../../http";
 	export default {
 		data() {
 			return {
 				rows: 0,
 				cols: 0,
 				seatSelector: null, // 座位模板对象
-				id: this.$route.params.id, // 放映厅的ID
+				id: this.$route.params.roomId, // 放映厅的ID
 			};
 		},
 		methods: {
@@ -136,17 +138,20 @@
 						let room_size = this.seatSelector.getSeatCount();
 						let id = this.id;
 						// 发送请求，更新放映厅的座位模板
-						this.$http.CinemaRoomApi.updateSeatTemplate({
-							id,
-							seat_template,
-							room_size,
-						}).then(res => {
-							console.log("更新放映厅的座位模板", res);
-							if (res.data.code == 200) {
-								this.$message.success("更新放映厅的座位模板完成");
-								this.$router.go(-1);
-							}
-						});
+						console.log(seat_template);
+						httpApi.cinemaRoomApi
+							.updateSeatTemplate({
+								id,
+								seat_template,
+								room_size,
+							})
+							.then(res => {
+								console.log("更新放映厅的座位模板", res);
+								if (res.data.code == 200) {
+									this.$message.success("更新放映厅的座位模板完成");
+									this.$router.go(-1);
+								}
+							});
 					} catch (error) {
 						this.$message.error(error);
 					}

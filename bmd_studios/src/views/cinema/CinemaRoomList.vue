@@ -8,13 +8,13 @@
 			<el-table-column label="放映厅名称" align="center" prop="room_name"></el-table-column>
 			<el-table-column label="放映厅类型" align="center" prop="room_type"></el-table-column>
 			<el-table-column label="放映厅座位数" align="center">
-				<template slot-scope="scope"> {{ scope.row.room_size ? scrope.row.room_size : "【暂未配置座位模板】" }} </template>
+				<template slot-scope="scope"> {{ scope.row.room_size ? scope.row.room_size : "【暂未配置座位模板】" }} </template>
 			</el-table-column>
 			<el-table-column label="操作" align="center">
 				<template slot-scope="scope">
 					<el-button size="small" type="success" icon="el-icon-view" circle @click="$router.push('/home/showingon-plan-list/' + scope.row.id)"></el-button>
 					<el-button size="small" type="primary" icon="el-icon-plus" circle @click="$router.push('/home/showingon-plan-add/' + scope.row.id)"></el-button>
-					<el-button size="small" type="warning" icon="el-icon-menu" circle @click="$router.push('/home/seat-template')"></el-button>
+					<el-button size="small" type="warning" icon="el-icon-menu" circle @click="$router.push('/home/seat-template/' + scope.row.id)"></el-button>
 					<el-button size="small" type="danger" icon="el-icon-delete" circle @click="deleteRoom(scope.row)"></el-button>
 				</template>
 			</el-table-column>

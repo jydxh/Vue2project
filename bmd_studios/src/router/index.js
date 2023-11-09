@@ -109,7 +109,7 @@ const routes = [
 				},
 			},
 			{
-				path: "seat-template",
+				path: "seat-template/:roomId",
 				component: () => import("../views/cinema/CinemaRoomSeatTemplate.vue"),
 				meta: {
 					thumb: ["电影院管理", "电影院列表", "放映厅列表", "配置座位模板"],
@@ -123,9 +123,9 @@ const routes = [
 		component: HomeView,
 	},
 	{
-		path: "/about",
-		name: "about",
-		component: () => import("../views/AboutView.vue"),
+		path: "/user/login",
+		name: "login",
+		component: () => import("../views/user/Login.vue"),
 	},
 ];
 
