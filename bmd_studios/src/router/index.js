@@ -1,6 +1,7 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -134,11 +135,14 @@ const router = new VueRouter({
 	base: process.env.BASE_URL,
 	routes,
 });
-/* 添加路由守护 */
+/*  添加全局路由守护 */
 router.beforeEach((to, from, next) => {
-	console.log(from);
-	console.log(to);
-	next();
+	console.log("to:", to);
+	if (to.path == "/user/login" || store.state.user) {
+		next();
+	} else {
+		router.push("/user/login");
+	}
 });
 
 export default router;

@@ -16,11 +16,31 @@
 							<span style="font-size: 1.2em; color: #efefef; font-weight: bold">&nbsp;&nbsp;百慕大影城后台管理</span>
 						</template>
 					</el-menu-item>
-					<el-menu-item index="/home/index">
+
+					<template v-for="item in menu">
+						<!-- 如果item时 menu-item 则普通列表项 -->
+						<el-menu-item :index="item.link" :key="item.title" v-if="item.type == 'menu-item'">
+							<i :class="item.icon"></i>
+							<template slot="title"> {{ item.title }} </template>
+						</el-menu-item>
+						<!-- 如果item.type 为sub menu 则执行一下代码 -->
+						<el-submenu :key="item.title" :index="item.link" v-else>
+							<template slot="title">
+								<i :class="item.icon"></i>
+								<span slot="title">{{ item.title }}</span>
+							</template>
+							<!-- sub menu 列表项 -->
+							<el-menu-item v-for="subItem in item.children" :index="subItem.link" :key="subItem.title">
+								<i :class="subItem.icon"></i>
+								<span slot="title">{{ subItem.title }}</span>
+							</el-menu-item>
+						</el-submenu>
+					</template>
+					<!-- <el-menu-item index="/home/index">
 						<i class="el-icon-message"></i>
 						<template slot="title"> 首页 </template>
-					</el-menu-item>
-					<el-submenu index="1">
+					</el-menu-item> -->
+					<!-- <el-submenu index="1">
 						<template slot="title">
 							<i class="el-icon-location"></i>
 							<span slot="title">演员管理</span>
@@ -78,7 +98,7 @@
 							<i class="el-icon-plus"></i>
 							<span slot="title">新增电影院</span>
 						</el-menu-item>
-					</el-submenu>
+					</el-submenu> -->
 				</el-menu>
 			</el-aside>
 
@@ -116,11 +136,105 @@
 		data() {
 			return {
 				isCollapse: false,
+				menu: [], // 存储完整的菜单列表
 			};
 		},
 
 		computed: {
 			...mapState(["user", "cityname"]),
+		},
+
+		mounted() {
+			//模拟发送http请求获取当前登录用户的菜单列表;
+			let menu = [
+				{
+					type: "menu-item",
+					title: "首页",
+					link: "/home/index",
+					icon: "el-icon-message",
+				},
+				{
+					type: "sub-menu",
+					link: "1",
+					title: "演员管理",
+					icon: "el-icon-location",
+					children: [
+						{
+							type: "menu-item",
+							link: "/home/actor-list",
+							title: "演员列表",
+							icon: "el-icon-notebook-2",
+						},
+						{
+							type: "menu-item",
+							link: "/home/actor-add",
+							title: "新增演员",
+							icon: "el-icon-plus",
+						},
+					],
+				},
+				{
+					type: "sub-menu",
+					link: "2",
+					title: "导演管理",
+					icon: "el-icon-location",
+					children: [
+						{
+							type: "menu-item",
+							link: "/home/director-list",
+							title: "导演列表",
+							icon: "el-icon-notebook-2",
+						},
+						{
+							type: "menu-item",
+							link: "/home/director-add",
+							title: "新增导演",
+							icon: "el-icon-plus",
+						},
+					],
+				},
+				{
+					type: "sub-menu",
+					link: "3",
+					title: "电影管理",
+					icon: "el-icon-location",
+					children: [
+						{
+							type: "menu-item",
+							link: "/home/movie-list",
+							title: "电影列表",
+							icon: "el-icon-notebook-2",
+						},
+						{
+							type: "menu-item",
+							link: "/home/movie-add",
+							title: "新增电影",
+							icon: "el-icon-plus",
+						},
+					],
+				},
+				{
+					type: "sub-menu",
+					link: "4",
+					title: "电影院管理",
+					icon: "el-icon-location",
+					children: [
+						{
+							type: "menu-item",
+							link: "/home/cinema-list",
+							title: "电影院列表",
+							icon: "el-icon-notebook-2",
+						},
+						{
+							type: "menu-item",
+							link: "/home/cinema-add",
+							title: "新增电影院",
+							icon: "el-icon-plus",
+						},
+					],
+				},
+			];
+			this.menu = menu;
 		},
 	};
 </script>

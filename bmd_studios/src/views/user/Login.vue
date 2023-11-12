@@ -54,9 +54,11 @@
 						httpApi.adminApi.login(this.form).then(res => {
 							console.log(res);
 							if (res.data.code == 200) {
-								this.$router.push("/");
 								// 将用户对象存入vuex
 								this.$store.commit("updateUser", res.data.data.user);
+								//将token 也存入vuex中
+								this.$store.commit("saveToken", res.data.data.token);
+								this.$router.push("/");
 							} else {
 								this.$refs["form"].resetFields();
 								this.$message.error(res.data.msg);

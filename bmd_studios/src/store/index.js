@@ -8,6 +8,7 @@ export default new Vuex.Store({
 		// 默认情况下，用户未登录，需要在登录后，修改对象数据
 		user: JSON.parse(sessionStorage.getItem("user")),
 		cityname: "beijing",
+		token: sessionStorage.getItem("token"), // 声明token 并且获取sessionStorage中“token”的 值
 	},
 	getters: {},
 	mutations: {
@@ -19,6 +20,11 @@ export default new Vuex.Store({
 			state.user = payload;
 			// 为了数据持久化保存，还需要向storage中存一份user
 			sessionStorage.setItem("user", JSON.stringify(payload));
+		},
+		/* 保存token */
+		saveToken(state, token) {
+			state.token = token;
+			sessionStorage.setItem("token", token);
 		},
 	},
 	actions: {

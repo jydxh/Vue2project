@@ -115,8 +115,17 @@
 							zoom: 11, // 初始化地图级别
 							center: [116.397428, 39.90923], // 初始化地图中心点位置
 						});
+						/* 注意点1：
+不被vue所管理的函数（定时器的回调函数、ajax的回调函数等、Promise的回调函数=》JS引擎帮忙调用）那么请使用箭头函数，因为箭头函数中this指代vm或者vc。
+
+注意点2：
+所有被Vue管理的函数（Vue帮忙调用），最好写成普通函数（普通函数中的this代表它的直接调用者，如obj.fn()，fn的this指向就是obj。默认情况下，没有直接的调用者,this的指向为window），这样this的指向才是vm 或 组件实例对象。
+-----------------------------------
+©著作权归作者所有：来自51CTO博客作者刘大猫26的原创作品，请联系作者获取转载授权，否则将追究法律责任
+vue2知识点：箭头函数和普通函数的this指向问题
+https://blog.51cto.com/u_15896157/5895782 */
 						this.map.on("click", e => {
-							//此处为什么用箭头函数才能加载出页面？解释：由于array function的this 实际是继承的它定义时所处的全局执行环境中的this，所以指向Vue对象，如果用function declaration，则指向调用次函数对象的上下文，为this.map对象，则无法获取到vue对象，导致后面对this.form对象中的key 无法赋值！！！ important！！！
+							//此处为什么用箭头函数才能加载出页面？解释：由于array function的this 实际是继承的它定义时所处的全局执行环境中的this，所以指向Vue对象下的methods，如果用function declaration，则指向调用次函数对象的上下文，为this.map对象，则无法获取到vue对象，导致后面对this.form对象中的key 无法赋值！！！ important！！！
 							let lng = e.lnglat.getLng();
 							let lat = e.lnglat.getLat();
 							this.form.longitude = lng;
